@@ -1,0 +1,158 @@
+:root {
+  /* цвета из гаммы */
+  --bark: #2f1b1a;
+  --leaf: #5a5e27;
+  --wound: #640017;
+  --paper: #efefc9;
+
+  --bark-soft: #3b2423;
+  --line: rgba(239, 239, 201, 0.18);
+
+  --font-display: 'Unbounded', sans-serif;
+  --font-text: 'Manrope', sans-serif;
+
+  /* чтобы фон и текст mantine совпадали с нашими */
+  --mantine-color-body: var(--bark);
+  --mantine-color-text: var(--paper);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background-color: var(--bark);
+  color: var(--paper);
+  font-family: var(--font-text);
+}
+
+a { color: inherit; }
+
+/* страница */
+.shell {
+  min-height: 100vh;
+}
+
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+
+/* шапка */
+.topbar {
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar__inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 18px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo__mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 50% 0 50% 50%;
+  background: var(--leaf);
+}
+
+.nav {
+  display: flex;
+  gap: 18px;
+  margin-left: auto;
+}
+
+.nav a {
+  text-decoration: none;
+  font-size: 14px;
+  opacity: 0.7;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+}
+
+.nav a:hover { opacity: 1; }
+
+/* navlink сам ставит класс active на открытую страницу */
+.nav a.active {
+  opacity: 1;
+  border-bottom-color: var(--leaf);
+}
+
+/* заголовки и текст */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(32px, 6vw, 56px);
+  line-height: 1.05;
+  margin: 0 0 18px;
+}
+
+.lead {
+  font-size: 17px;
+  line-height: 1.6;
+  max-width: 58ch;
+  opacity: 0.85;
+  margin: 0 0 28px;
+}
+
+/* карточка растения на главной */
+.plant-card {
+  display: block;
+  text-decoration: none;
+  background: var(--bark-soft);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px;
+}
+
+.plant-card:hover { border-color: var(--leaf); }
+
+.plant-card__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* карточка болезни с полоской слева */
+.label-card {
+  background: var(--bark-soft);
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--leaf);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+
+.label-card--danger { border-left-color: var(--wound); }
+
+/* сетки, на телефоне становятся в одну колонку */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 800px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
