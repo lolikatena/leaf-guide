@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Button, Text, Title } from '@mantine/core';
-import type { Disease } from '../data/plants';
+import type { Disease } from '../plant/types';
 
 type Props = {
   plantId: string;
@@ -9,7 +9,7 @@ type Props = {
 
 export default function DiseaseCard({ plantId, disease }: Props) {
   return (
-    <article className="label-card">
+    <article className="label-card appear">
       <Title order={3} size="h4" mb={8}>
         {disease.name}
       </Title>
@@ -18,7 +18,12 @@ export default function DiseaseCard({ plantId, disease }: Props) {
         {disease.description}
       </Text>
 
-      <Button component={Link} to={'/plants/' + plantId + '/' + disease.id} variant="light" size="xs">
+      <Button
+        component={Link}
+        to={'/plants/' + plantId + '/' + disease.id}
+        variant="light"
+        size="xs"
+      >
         Подробнее
       </Button>
     </article>

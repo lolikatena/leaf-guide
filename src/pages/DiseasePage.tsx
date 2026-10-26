@@ -1,11 +1,27 @@
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Text, Title } from '@mantine/core';
-import { findPlant } from '../data/plants';
+import StateMessage from '../shared/ui/StateMessage';
+import { findPlant } from '../entities/plant/api';
+import type { Plant, Status } from '../entities/plant/types';
 
-export default function DiseasePage() {
+type Props = {
+  plants: Plant[];
+  status: Status;
+};
+
+// какая вкладка открыта
+type Tab = 'symptoms' | 'treatment';
+
+export default function DiseasePage({ plants, status }: Props) {
   const { plantId, diseaseId } = useParams();
-  const plant = findPlant(plantId);
+  const [tab, setTab] = useState<Tab>('symptoms');
 
+  if (status === 'loading') {
+    return <StateMessage kind="loading" title="Загружаем болезнь" />;
+  }
+
+  const plant = findPlant(plants, plantId);
   // сначала нашли растение, потом внутри него болезнь
   const disease = plant?.diseases.find((d) => d.id === diseaseId);
 
@@ -31,21 +47,29 @@ export default function DiseasePage() {
       <h1 className="display">{disease.name}</h1>
       <p className="lead">{disease.description}</p>
 
-      <div className="grid-2">
-        <section className="label-card">
-          <Title order={2} size="h4" mb={12}>
-            Симптомы на листьях
-          </Title>
-          <Text size="sm">{disease.symptoms}</Text>
-        </section>
-
-        <section className="label-card label-card--danger">
-          <Title order={2} size="h4" mb={12}>
-            Как лечить
-          </Title>
-          <Text size="sm">{disease.treatment}</Text>
-        </section>
+      {/* переключатель вкладок, текст под ним меняется */}
+      <div className="tabs">
+        <button
+          className={tab === 'symptoms' ? 'tabs__item tabs__item--active' : 'tabs__item'}
+          onClick={() => setTab('symptoms')}
+        >
+          Симптомы
+        </button>
+        <button
+          className={tab === 'treatment' ? 'tabs__item tabs__item--active' : 'tabs__item'}
+          onClick={() => setTab('treatment')}
+        >
+          Как лечить
+        </button>
       </div>
+
+      {/* key нужен чтобы блок перерисовывался и анимация повторялась */}
+      <section
+        key={tab}
+        className={tab === 'treatment' ? 'label-card label-card--danger appear' : 'label-card appear'}
+      >
+        <Text size="sm">{tab === 'symptoms' ? disease.symptoms : disease.treatment}</Text>
+      </section>
 
       <Button component={Link} to={'/plants/' + plant.id} variant="subtle" mt={28}>
         Назад к болезням растения

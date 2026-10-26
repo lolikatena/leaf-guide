@@ -1,18 +1,7 @@
-export type Disease = {
-  id: string;
-  name: string;
-  description: string;
-  symptoms: string;
-  treatment: string;
-};
+import { LOAD_DELAY, SIMULATE_ERROR } from '../../shared/config';
+import type { Disease, Plant } from './types';
 
-export type Plant = {
-  id: string;
-  name: string;
-  diseases: Disease[];
-};
-
-// пока заглушки, настоящие данные добавим позже
+// пока заглушки, настоящие данные придут с бэкенда
 const placeholderDiseases: Disease[] = [
   {
     id: 'disease-1',
@@ -37,16 +26,29 @@ const placeholderDiseases: Disease[] = [
   },
 ];
 
-export const plants: Plant[] = [
+const demoPlants: Plant[] = [
   { id: 'tomato', name: 'Томат', diseases: placeholderDiseases },
   { id: 'potato', name: 'Картофель', diseases: placeholderDiseases },
   { id: 'cucumber', name: 'Огурец', diseases: placeholderDiseases },
   { id: 'apple', name: 'Яблоня', diseases: placeholderDiseases },
   { id: 'grape', name: 'Виноград', diseases: placeholderDiseases },
-  { id: 'rose', name: 'Роза', diseases: placeholderDiseases },
+  // у розы специально нет болезней, чтобы показать пустой экран
+  { id: 'rose', name: 'Роза', diseases: [] },
 ];
 
-// ищем растение по id из адреса страницы
-export function findPlant(id: string | undefined) {
+// делаем вид, что данные приходят с сервера: с задержкой и через промис
+export function fetchPlants(): Promise<Plant[]> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (SIMULATE_ERROR) {
+        reject(new Error('не удалось загрузить данные'));
+      } else {
+        resolve(demoPlants);
+      }
+    }, LOAD_DELAY);
+  });
+}
+
+export function findPlant(plants: Plant[], id: string | undefined) {
   return plants.find((plant) => plant.id === id);
 }
